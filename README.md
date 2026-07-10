@@ -1,96 +1,165 @@
-# 1Touch Development — Enterprise AI Consulting Platform
+# 1Touch Development
 
-A full-stack enterprise website for **1Touch Development**, an AI/ML/Data Intelligence consulting firm.
+Premium enterprise website and API platform for **1Touch Development**, an AI/ML/Data Intelligence consulting firm positioned around a simple promise: **we solve difficult business problems using AI**.
 
-## Architecture
+## What was built for ABH-11
 
+This ticket delivers a full-stack monorepo with:
+
+- **Next.js 14 + TypeScript frontend** for the public marketing experience
+- **Express + TypeScript backend** serving health, content, contact, and newsletter APIs
+- **PostgreSQL schema + seed data** for services, industries, solutions, insights, contacts, and subscribers
+- **Enterprise visual system** using deep navy / graphite / electric blue styling, strong typography, generous whitespace, and subtle motion
+- **Section-driven navigation** for Home, Services, Industries, Solutions, Insights, About, and Contact, plus a dedicated Technology Licensing section/teaser in the experience
+
+## Experience overview
+
+The frontend includes:
+
+- Sticky header with responsive navigation
+- Hero section with animated network canvas and executive-focused messaging
+- Trusted technology logo strip
+- Services overview with seeded enterprise service catalog
+- Industry coverage section spanning 16 sectors
+- Why Choose 1Touch and delivery process sections
+- Featured solutions section
+- Technology licensing callout
+- Insights preview backed by the API
+- About section covering mission, vision, philosophy, and delivery posture
+- Contact form wired to the backend
+- Footer newsletter signup wired to the backend
+
+## Repository structure
+
+```text
+.
+├── app/                # Next.js App Router frontend
+├── components/         # Shared React UI components
+├── src/                # Frontend API client + shared TS types
+├── backend/            # Express API server
+├── database/           # PostgreSQL schema + seed data
+└── docs/               # Delivery and implementation notes
 ```
-/ (root)          → Next.js 14 frontend (App Router + TypeScript)
-backend/          → Express + TypeScript API
-database/         → PostgreSQL schema + seed data
-```
 
-## Environment Variables
+## Data seeded in the database
 
-### Frontend (root `.env.local`)
+`database/schema.sql` bootstraps the schema and seeds:
+
+- **14 services**
+- **16 industries**
+- **9 solutions**
+- **6 insight articles**
+
+The backend runs schema initialization on boot via `initSchema()`.
+
+## Environment variables
+
+### Frontend (`.env.local` at repo root)
+
 ```env
 NEXT_PUBLIC_API_URL=http://localhost:4000
 ```
 
 ### Backend (`backend/.env`)
+
 ```env
 PORT=4000
 DATABASE_URL=postgresql://user:password@localhost:5432/onetouch
-JWT_SECRET=your-secure-jwt-secret-here
 FRONTEND_URL=http://localhost:3000
+JWT_SECRET=change-me-for-production
 ```
 
-## Getting Started
+## Setup
 
-### 1. Database
+Install dependencies in both workspaces:
+
 ```bash
-# Create PostgreSQL database
-createdb onetouch
-
-# Schema is auto-applied on backend startup
-# Or apply manually:
-psql onetouch < database/schema.sql
+npm install
+cd backend && npm install
 ```
 
-### 2. Backend
+## Running locally
+
+### 1) Start PostgreSQL
+
+Make sure `DATABASE_URL` points at a reachable PostgreSQL instance.
+
+### 2) Start the backend
+
 ```bash
 cd backend
-npm install
 npm run dev
-# API running at http://localhost:4000
 ```
 
-### 3. Frontend
+Backend starts on `process.env.PORT` and applies `database/schema.sql` automatically.
+
+### 3) Start the frontend
+
+In a second terminal:
+
 ```bash
-# From root
-npm install
 npm run dev
-# App running at http://localhost:3000
 ```
 
-## API Endpoints
+Frontend starts on port 3000 by default and reads `NEXT_PUBLIC_API_URL` for all API calls.
 
-| Method | Path | Description |
-|--------|------|-------------|
-| GET | /health | Health check + DB status |
-| POST | /auth/signup | Create user account |
-| POST | /auth/login | Authenticate, returns JWT |
-| POST | /api/contact | Submit consultation request |
-| POST | /api/newsletter | Subscribe to newsletter |
-| GET | /api/services | List all services |
-| GET | /api/services/:slug | Get service by slug |
-| GET | /api/industries | List all industries |
-| GET | /api/industries/:slug | Get industry by slug |
-| GET | /api/solutions | List all solutions |
-| GET | /api/solutions/:slug | Get solution by slug |
-| GET | /api/insights | List published articles |
-| GET | /api/insights/:slug | Get article by slug |
+## Build for production
 
-## Pages
+### Frontend
 
-- **Home** — Hero, services grid, industries, process, solutions, insights, contact
-- **Services** — All 14 AI services with full detail
-- **Industries** — 16 industry verticals
-- **Solutions** — Pre-built AI solution frameworks
-- **Insights** — Blog articles pulled from backend
-- **Contact** — Consultation form
+```bash
+npm run build
+npm start
+```
 
-## Tech Stack
+### Backend
 
-**Frontend:** Next.js 14, TypeScript, CSS (no framework)
-**Backend:** Express, TypeScript, pg (PostgreSQL driver)
-**Database:** PostgreSQL
-**Auth:** JWT + bcryptjs
+```bash
+cd backend
+npm run build
+npm start
+```
 
-## Production Deployment
+## API surface
 
-1. Set `DATABASE_URL` to your production PostgreSQL connection string
-2. Set `JWT_SECRET` to a cryptographically secure random string
-3. Set `NEXT_PUBLIC_API_URL` to your backend API URL
-4. Set `FRONTEND_URL` in backend to your frontend domain for CORS
-5. Run `npm run build` in both root and `backend/`
+### Health
+
+- `GET /health` — returns service status plus database connectivity
+
+### Contact and newsletter
+
+- `POST /api/contact` — consultation request form submission
+- `POST /api/newsletter` — newsletter subscription
+
+### Content APIs
+
+- `GET /api/services`
+- `GET /api/services/:slug`
+- `GET /api/industries`
+- `GET /api/industries/:slug`
+- `GET /api/solutions`
+- `GET /api/solutions/:slug`
+- `GET /api/insights`
+- `GET /api/insights/:slug`
+
+### Auth utilities present in backend
+
+- `POST /auth/signup`
+- `POST /auth/login`
+
+## Release notes
+
+- Documentation for this handoff lives in `docs/IMPLEMENTATION_NOTES.md`
+- Ticket changelog entry lives in `CHANGELOG.md`
+
+## Deployment checklist
+
+- Set frontend and backend environment variables
+- Provision PostgreSQL and confirm `DATABASE_URL`
+- Start backend first so schema/seed initialization can run
+- Start frontend with `NEXT_PUBLIC_API_URL` pointing to the deployed API
+- Smoke test:
+  - `GET /health`
+  - contact form submission
+  - newsletter signup
+  - services / industries / solutions / insights API responses

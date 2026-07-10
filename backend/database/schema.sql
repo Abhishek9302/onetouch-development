@@ -566,7 +566,8 @@ INSERT INTO insights (slug, title, excerpt, content, author, category, tags, rea
 
 The most common failure we observe is the absence of rigorous evaluation frameworks. Teams that perform well in demos frequently struggle in production because they evaluated their LLM on a handful of cherry-picked examples rather than a representative sample of real-world inputs.
 
-Production LLM evaluation requires three components: a diverse, representative test set drawn from actual business data; automated metrics that correlate with business outcomes (not just BLEU scores or perplexity); and human evaluation protocols for the subset of outputs that automated metrics cannot assess.
+Production LLM evaluation requires three components: a diverse, representative test set drawn from actual business data
+ON CONFLICT (slug) DO NOTHING; automated metrics that correlate with business outcomes (not just BLEU scores or perplexity); and human evaluation protocols for the subset of outputs that automated metrics cannot assess.
 
 ## Infrastructure Underinvestment
 

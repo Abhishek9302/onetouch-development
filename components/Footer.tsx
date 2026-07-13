@@ -1,7 +1,9 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { subscribeNewsletter } from '@/src/api';
+import { SITE } from '@/src/content';
 
 export default function Footer() {
   const [email, setEmail] = useState('');
@@ -26,17 +28,46 @@ export default function Footer() {
         <div className="footer-grid">
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
-              <div style={{ width: 36, height: 36, background: 'linear-gradient(135deg, #0066ff, #00c8e0)', borderRadius: 6, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 900, fontSize: '0.9rem', color: 'white' }}>1T</div>
-              <span style={{ fontWeight: 800, fontSize: '1.125rem', color: 'var(--white)' }}>1Touch Development</span>
+              <div
+                style={{
+                  width: 36,
+                  height: 36,
+                  background: 'linear-gradient(135deg, #0066ff, #00c8e0)',
+                  borderRadius: 6,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontWeight: 900,
+                  fontSize: '0.85rem',
+                  color: 'white',
+                  letterSpacing: '-0.04em',
+                }}
+              >
+                1t
+              </div>
+              <span style={{ fontWeight: 800, fontSize: '1.125rem', color: 'var(--white)' }}>
+                {SITE.name}
+              </span>
             </div>
             <p className="footer-brand-desc">
-              Enterprise AI/ML and Data Intelligence consulting. We solve difficult business
-              problems using AI — for organizations that demand production-grade results.
+              AI/ML consulting, services, and technology licensing. We build production-grade
+              machine learning, generative AI, computer vision, LLM, and multi-agent systems.
             </p>
             <form onSubmit={handleSubscribe}>
-              <p style={{ fontSize: '0.8125rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '0.75rem', letterSpacing: '0.05em', textTransform: 'uppercase' }}>AI Intelligence Newsletter</p>
+              <p
+                style={{
+                  fontSize: '0.8125rem',
+                  fontWeight: 600,
+                  color: 'var(--text-secondary)',
+                  marginBottom: '0.75rem',
+                  letterSpacing: '0.05em',
+                  textTransform: 'uppercase',
+                }}
+              >
+                AI Intelligence Newsletter
+              </p>
               {subStatus === 'success' ? (
-                <p style={{ fontSize: '0.875rem', color: '#4ade80' }}>✓ Subscribed successfully</p>
+                <p style={{ fontSize: '0.875rem', color: '#4ade80' }}>✓ Subscribed — check your email client if prompted</p>
               ) : (
                 <div className="newsletter-form">
                   <input
@@ -58,7 +89,9 @@ export default function Footer() {
                 </div>
               )}
               {subStatus === 'error' && (
-                <p style={{ fontSize: '0.8125rem', color: '#ff6b6b', marginTop: '0.5rem' }}>Failed to subscribe. Please try again.</p>
+                <p style={{ fontSize: '0.8125rem', color: '#ff6b6b', marginTop: '0.5rem' }}>
+                  Failed to subscribe. Email us at {SITE.email}
+                </p>
               )}
             </form>
           </div>
@@ -66,8 +99,20 @@ export default function Footer() {
           <div>
             <p className="footer-col-title">Services</p>
             <ul className="footer-links">
-              {['AI Strategy', 'Machine Learning', 'Generative AI', 'LLM Development', 'Computer Vision', 'AI Agents', 'Data Engineering'].map((s) => (
-                <li key={s}><span className="footer-link">{s}</span></li>
+              {[
+                ['AI Strategy', '/services#ai-strategy-consulting'],
+                ['Machine Learning', '/services#machine-learning'],
+                ['LLM Development', '/services#llm-development'],
+                ['Computer Vision', '/services#computer-vision'],
+                ['Multi-Agent Systems', '/services#multi-agent-systems'],
+                ['BI & Analytics', '/services#business-intelligence'],
+                ['Automation', '/services#automation'],
+              ].map(([label, href]) => (
+                <li key={href}>
+                  <Link href={href} className="footer-link">
+                    {label}
+                  </Link>
+                </li>
               ))}
             </ul>
           </div>
@@ -75,8 +120,20 @@ export default function Footer() {
           <div>
             <p className="footer-col-title">Industries</p>
             <ul className="footer-links">
-              {['Finance', 'Healthcare', 'Manufacturing', 'Retail', 'Insurance', 'Government', 'Energy', 'Logistics'].map((i) => (
-                <li key={i}><span className="footer-link">{i}</span></li>
+              {[
+                ['Football & Sports', '/industries#football'],
+                ['Finance', '/industries#finance'],
+                ['Healthcare', '/industries#healthcare'],
+                ['Manufacturing', '/industries#manufacturing'],
+                ['Retail', '/industries#retail'],
+                ['Insurance', '/industries#insurance'],
+                ['Energy', '/industries#energy'],
+              ].map(([label, href]) => (
+                <li key={href}>
+                  <Link href={href} className="footer-link">
+                    {label}
+                  </Link>
+                </li>
               ))}
             </ul>
           </div>
@@ -84,27 +141,41 @@ export default function Footer() {
           <div>
             <p className="footer-col-title">Company</p>
             <ul className="footer-links">
-              {['About Us', 'Solutions', 'Technology Licensing', 'Insights', 'Careers', 'Contact'].map((c) => (
-                <li key={c}><span className="footer-link">{c}</span></li>
+              {[
+                ['About', '/about'],
+                ['Solutions', '/solutions'],
+                ['Technology Licensing', '/licensing'],
+                ['Insights', '/insights'],
+                ['Contact', '/contact'],
+              ].map(([label, href]) => (
+                <li key={href}>
+                  <Link href={href} className="footer-link">
+                    {label}
+                  </Link>
+                </li>
               ))}
             </ul>
             <div style={{ marginTop: '2rem' }}>
               <p className="footer-col-title">Contact</p>
               <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)', lineHeight: 1.7 }}>
-                enterprise@1touchdevelopment.com<br />
-                New York · London · Singapore
+                <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+                <br />
+                {SITE.locations}
               </p>
             </div>
           </div>
         </div>
 
         <div className="footer-bottom">
-          <p className="footer-copy">© {new Date().getFullYear()} 1Touch Development. All rights reserved.</p>
+          <p className="footer-copy">
+            © {new Date().getFullYear()} {SITE.legalName}. All rights reserved.
+          </p>
           <div className="footer-legal">
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms of Service</a>
-            <a href="#">Cookie Policy</a>
-            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--blue-light)' }}>LinkedIn</a>
+            <Link href="/contact">Privacy</Link>
+            <Link href="/contact">Terms</Link>
+            <a href={SITE.linkedin} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--blue-light)' }}>
+              LinkedIn
+            </a>
           </div>
         </div>
       </div>

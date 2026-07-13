@@ -22,7 +22,7 @@
   --text-primary: #f0f2f7;
   --text-secondary: #a8afc4;
   --text-muted: #6b7494;
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-sans: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
 }
 
@@ -145,11 +145,13 @@ p { line-height: 1.7; }
 
 /* Cards */
 .card {
+  display: block;
   background: var(--graphite);
   border: 1px solid var(--border);
   border-radius: 8px;
   padding: 2rem;
   transition: all 0.3s ease;
+  color: inherit;
 }
 
 .card:hover {
@@ -159,11 +161,13 @@ p { line-height: 1.7; }
 }
 
 .card-dark {
+  display: block;
   background: var(--navy-mid);
   border: 1px solid var(--border);
   border-radius: 8px;
   padding: 2rem;
   transition: all 0.3s ease;
+  color: inherit;
 }
 
 .card-dark:hover {
@@ -400,9 +404,10 @@ p { line-height: 1.7; }
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 900;
   color: white;
+  letter-spacing: -0.04em;
 }
 
 .nav-links {
@@ -862,6 +867,7 @@ p { line-height: 1.7; }
 }
 
 .mobile-nav-link {
+  display: block;
   padding: 1rem;
   font-size: 1.125rem;
   font-weight: 600;

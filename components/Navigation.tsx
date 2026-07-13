@@ -1,23 +1,22 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 const NAV_ITEMS = [
-  { label: 'Home', id: 'home' },
-  { label: 'Services', id: 'services' },
-  { label: 'Industries', id: 'industries' },
-  { label: 'Solutions', id: 'solutions' },
-  { label: 'Insights', id: 'insights' },
-  { label: 'About', id: 'about' },
-  { label: 'Contact', id: 'contact' },
+  { label: 'Home', href: '/' },
+  { label: 'Services', href: '/services' },
+  { label: 'Industries', href: '/industries' },
+  { label: 'Solutions', href: '/solutions' },
+  { label: 'Licensing', href: '/licensing' },
+  { label: 'Insights', href: '/insights' },
+  { label: 'About', href: '/about' },
+  { label: 'Contact', href: '/contact' },
 ];
 
-interface NavigationProps {
-  activePage: string;
-  setActivePage: (page: string) => void;
-}
-
-export default function Navigation({ activePage, setActivePage }: NavigationProps) {
+export default function Navigation() {
+  const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -27,13 +26,13 @@ export default function Navigation({ activePage, setActivePage }: NavigationProp
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleNavClick = (id: string) => {
-    setActivePage(id);
+  useEffect(() => {
     setMobileOpen(false);
-    const el = document.getElementById(id);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
-    }
+  }, [pathname]);
+
+  const isActive = (href: string) => {
+    if (href === '/') return pathname === '/';
+    return pathname === href || pathname.startsWith(`${href}/`);
   };
 
   return (
@@ -45,37 +44,37 @@ export default function Navigation({ activePage, setActivePage }: NavigationProp
         }}
       >
         <div className="nav-inner">
-          <div className="nav-logo">
-            <div className="nav-logo-mark">1T</div>
-            <span>1Touch Development</span>
-          </div>
+          <Link href="/" className="nav-logo">
+            <div className="nav-logo-mark">1t</div>
+            <span>1touch.ai</span>
+          </Link>
 
           <ul className="nav-links">
             {NAV_ITEMS.map((item) => (
-              <li key={item.id}>
-                <button
-                  className={`nav-link ${activePage === item.id ? 'active' : ''}`}
-                  onClick={() => handleNavClick(item.id)}
-                  style={{ background: 'none', border: 'none', fontFamily: 'inherit' }}
+              <li key={item.href}>
+                <Link
+                  href={item.href}
+                  className={`nav-link ${isActive(item.href) ? 'active' : ''}`}
                 >
                   {item.label}
-                </button>
+                </Link>
               </li>
             ))}
           </ul>
 
           <div className="nav-cta">
-            <button
+            <Link
+              href="/contact"
               className="btn btn-primary"
               style={{ padding: '0.625rem 1.25rem', fontSize: '0.875rem' }}
-              onClick={() => handleNavClick('contact')}
             >
-              Book Consultation
-            </button>
+              Contact Us
+            </Link>
             <button
               className="nav-mobile-toggle"
               onClick={() => setMobileOpen(!mobileOpen)}
               aria-label="Toggle menu"
+              type="button"
             >
               {mobileOpen ? '✕' : '☰'}
             </button>
@@ -85,22 +84,21 @@ export default function Navigation({ activePage, setActivePage }: NavigationProp
 
       <div className={`mobile-nav ${mobileOpen ? 'open' : ''}`}>
         {NAV_ITEMS.map((item) => (
-          <button
-            key={item.id}
+          <Link
+            key={item.href}
+            href={item.href}
             className="mobile-nav-link"
-            onClick={() => handleNavClick(item.id)}
-            style={{ background: 'none', border: 'none', fontFamily: 'inherit', textAlign: 'left', width: '100%' }}
           >
             {item.label}
-          </button>
+          </Link>
         ))}
-        <button
+        <Link
+          href="/contact"
           className="btn btn-primary"
           style={{ marginTop: '1.5rem' }}
-          onClick={() => handleNavClick('contact')}
         >
-          Book Consultation
-        </button>
+          Contact Us
+        </Link>
       </div>
     </>
   );

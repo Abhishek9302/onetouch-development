@@ -1,19 +1,44 @@
-# onetouch-development
+# 1touch.ai
 
-## Zero-Human Multi-Agent Platform
+Enterprise AI/ML consulting website — services, industries, solutions, technology licensing, and contact.
 
-This repository is managed by the Zero-Human multi-agent platform.
+## Stack
 
-### Getting Started
+- **Frontend:** Next.js 14 (App Router) + TypeScript
+- **Backend (optional):** Express + PostgreSQL for contact/newsletter and CMS content
+- Site works **fully offline / without API** via static content fallbacks
 
-1. Configure your agents in the platform dashboard
-2. Create issues or feature requests
-3. Agents will automatically work on tasks
+## Brand
 
-### Documentation
+- Site name: **1touch.ai**
+- Contact: `hello@1touch.ai` (update in `src/content.ts` when real details land)
 
-- See `docs/` for project documentation
-- See `.paperclip/` for platform configuration
-- See `memory-bank/` for agent memory and context
+## Develop
 
-For more information, visit the Zero-Human platform documentation.
+```bash
+npm install
+npm run dev
+```
+
+Optional API:
+
+```bash
+export NEXT_PUBLIC_API_URL=http://localhost:4000
+```
+
+## Pages
+
+| Route | Purpose |
+|-------|---------|
+| `/` | Landing |
+| `/services` | 14 AI service lines |
+| `/industries` | 16 industries (Football, Finance, …) |
+| `/solutions` | Pre-built AI solutions |
+| `/licensing` | Technology licensing |
+| `/insights` | Articles |
+| `/about` | Company |
+| `/contact` | Contact for pricing / details |
+
+## Deploy
+
+Static-friendly Next.js app. Set `NEXT_PUBLIC_API_URL` only if backend is live; otherwise contact form falls back to mailto.

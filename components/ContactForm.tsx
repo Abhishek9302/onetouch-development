@@ -44,7 +44,9 @@ export default function ContactForm() {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
@@ -55,7 +57,16 @@ export default function ContactForm() {
     try {
       await submitContact(form);
       setSuccess(true);
-      setForm({ name: '', email: '', company: '', role: '', phone: '', service_interest: '', message: '', budget_range: '' });
+      setForm({
+        name: '',
+        email: '',
+        company: '',
+        role: '',
+        phone: '',
+        service_interest: '',
+        message: '',
+        budget_range: '',
+      });
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Failed to submit. Please try again.');
     } finally {
@@ -67,14 +78,16 @@ export default function ContactForm() {
     return (
       <div className="card" style={{ textAlign: 'center', padding: '3rem' }}>
         <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>✓</div>
-        <h3 style={{ color: 'var(--white)', marginBottom: '0.75rem' }}>Consultation Request Received</h3>
+        <h3 style={{ color: 'var(--white)', marginBottom: '0.75rem' }}>Request Received</h3>
         <p style={{ color: 'var(--text-secondary)' }}>
-          Thank you for reaching out. Our enterprise team will contact you within one business day.
+          Thanks for reaching out. We&apos;ll follow up with pricing and next steps. If your email
+          client opened, please send the message to complete your request.
         </p>
         <button
           className="btn btn-secondary"
           style={{ marginTop: '1.5rem' }}
           onClick={() => setSuccess(false)}
+          type="button"
         >
           Submit Another Request
         </button>
@@ -145,7 +158,9 @@ export default function ContactForm() {
           >
             <option value="">Select a service</option>
             {SERVICES.map((s) => (
-              <option key={s} value={s}>{s}</option>
+              <option key={s} value={s}>
+                {s}
+              </option>
             ))}
           </select>
         </div>
@@ -159,7 +174,9 @@ export default function ContactForm() {
           >
             <option value="">Select range</option>
             {BUDGETS.map((b) => (
-              <option key={b} value={b}>{b}</option>
+              <option key={b} value={b}>
+                {b}
+              </option>
             ))}
           </select>
         </div>
@@ -171,7 +188,7 @@ export default function ContactForm() {
           name="message"
           value={form.message}
           onChange={handleChange}
-          placeholder="Describe your business challenge and what you're hoping to achieve with AI..."
+          placeholder="Describe your challenge — we'll follow up with details and pricing."
           required
           rows={5}
         />
@@ -184,9 +201,11 @@ export default function ContactForm() {
         style={{ alignSelf: 'flex-start', minWidth: 180 }}
       >
         {loading ? (
-          <><div className="spinner" /> Submitting...</>
+          <>
+            <div className="spinner" /> Submitting...
+          </>
         ) : (
-          'Request Consultation →'
+          'Contact Us for Details →'
         )}
       </button>
     </form>

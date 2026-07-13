@@ -20,7 +20,7 @@ export default function InsightsList() {
     setArticleLoading(true);
     try {
       const article = await getInsightBySlug(slug);
-      setSelected(article);
+      setSelected(article ?? null);
     } finally {
       setArticleLoading(false);
     }
